@@ -35,18 +35,65 @@ ChatBot::~ChatBot()
     std::cout << "ChatBot Destructor" << std::endl;
 
     // deallocate heap memory
-    if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
+    if(_image != nullptr) // Attention: wxWidgets used NULL and not nullptr
     {
         delete _image;
-        _image = NULL;
+        _image = nullptr;
     }
 }
-
 //// STUDENT CODE
-////
 
-////
-//// EOF STUDENT CODE
+       //if i construct an object using a copy constructor  :
+       
+ChatBot::ChatBot(const ChatBot &_chatbot) {
+    
+    _image = new wxBitmap();
+//copy content 
+    *_image = *_chatbot._image;
+    _chatLogic = _chatbot._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+    _rootNode = _chatbot._rootNode;
+
+    std::cout << "Copy Constructor called" <<std::endl;
+}
+ChatBot& ChatBot::operator=(const ChatBot& source) {
+
+    if (this == &source)
+        return *this;
+    delete _image;
+    _image = source._image;
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    std::cout << "Copy Operator called" << std::endl;
+    return *this;
+}
+ChatBot& ChatBot::operator=(ChatBot&& source) {
+
+    if (this == &source)
+        return *this;
+    delete _image;
+    _image = source._image;
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _chatLogic->SetChatbotHandle(this);
+    //invalidate the old data
+    source._image = nullptr;
+    source._chatLogic = nullptr;
+    source._currentNode = nullptr;
+    std::cout << "Move Operator called" << std::endl;
+    return *this;
+}
+ChatBot::ChatBot(ChatBot&& source) {
+    _image = source._image;
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _chatLogic->SetChatbotHandle(this);
+    //invalidate the old data
+    source._image = nullptr;
+    source._chatLogic = nullptr;
+    source._currentNode = nullptr;
+    std::cout << "Move Constructor called" << std::endl;
+}
 
 void ChatBot::ReceiveMessageFromUser(std::string message)
 {
