@@ -181,9 +181,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
 		}
 	}
 
-	// add chatbot to graph root node
-	//added image from initialization, removed logicHandler from constructor?? is there a different design?
-	//ChatLogic was null when chatbot was initialized in this class''s constructor
+	// add chatbot to graph root nod
 	ChatBot _chatBot("../images/chatbot.png");
 	_chatBot.SetChatLogicHandle(this);
 	_chatBot.SetRootNode(rootNode);
